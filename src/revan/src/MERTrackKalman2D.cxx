@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 * MERTrackKalman2D.cxx
 *
@@ -714,3 +715,6 @@ void MERTrackKalman2D::TrackPairs(MRERawEvent* RE)
 }
 // MERTrackKalman2D.cxx: the end...
 ////////////////////////////////////////////////////////////////////////////////
+||||||| parent of b0be42c2 (Pair dev (#2))
+=======
+/*

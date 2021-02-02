@@ -464,8 +464,6 @@ bool MERTrack::Analyze(MRawEventIncarnations* REList)
     //m_List->SetValidEvent(m_List->GetRawEventAt(m_List->GetNRawEvents()-1));
     m_List->SetBestTryEvent(m_List->GetRawEventAt(0));
 
-
-
     // Remove all not-so-good sequences:
     for (int e = m_NSequencesToKeep; e < m_List->GetNRawEvents(); ++e) {
       RE = m_List->GetRawEventAt(e);

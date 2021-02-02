@@ -346,7 +346,7 @@ void MRawEventAnalyzer::SetSettings(MSettingsEventReconstruction* S)
   SetSearchPhotoEvent(S->GetSearchPhoto());
   SetEventTypeFileName(S->GetEventTypeFileName());
 
-  // electron tracking
+  // Electron tracking
   SetSearchPairTracks(S->GetSearchPairs());//also in use in default event type identification
   SetSearchMIPTracks(S->GetSearchMIPs());
   SetSearchComptonTracks(S->GetSearchComptons());

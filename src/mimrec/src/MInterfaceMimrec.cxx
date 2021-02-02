@@ -5387,6 +5387,7 @@ void MInterfaceMimrec::Polarization()
 
         if (fabs(PairEvent->GetARMGamma(TestPosition, m_Settings->GetCoordinateSystem()))*c_Deg < ArmCut) {
           /*
+        if (fabs(PairEvent->GetARMGamma(Origin, m_Settings->GetCoordinateSystem()))*c_Deg < ArmCut) {
           MVector Plain = PairEvent->GetElectronDirection() + PairEvent->GetPositronDirection();
           Plain.RotateZ(-Phi);
           Plain.RotateY(-Theta);
@@ -6189,7 +6190,7 @@ void MInterfaceMimrec::LocationOfInitialInteraction()
 
   // Step 2: Create the histograms
   DetermineAxis(xMin, xMax, yMin, yMax, zMin, zMax, Positions);
-  
+
   TH3D* xyzHist = new TH3D("SpacialHitDistributionXYZ",
                         "Spacial hit distribution xyz",
                         MaxNBins, xMin, +xMax,
