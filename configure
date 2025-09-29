@@ -412,6 +412,27 @@ fi
 
 
 
+# Check for onnx (conda/brew install only)
+echo ""
+echo "(g) onnxruntime library (optional)"
+echo ""
+
+OnnxFound=0
+
+if [[ ${CONDA_PREFIX} != "" ]] && [[ -f ${CONDA_PREFIX}/include/onnxruntime/core/session/onnxruntime_cxx_api.h ]]; then
+  echo "Found an onnxruntime install in a conda environment."
+  OnnxFound=1
+else
+  if [[ -f /opt/homebrew/include/onnxruntime/onnxruntime_cxx_api.h ]]; then
+    echo "Found a homebrez install of onnxruntime."
+    OnnxFound=2
+  else
+    echo "-> Did not find a pytorch install in the current conda environment."
+    echo "   Torch is not a mandatory part of MEGAlib. The installation will proceed without it."
+  fi
+fi
+
+
 
 # Part 5:
 # Setup the make environment
@@ -517,8 +538,8 @@ echo " " >> config/Makefile.options
 echo "GEANT4INSTALLED  := ${Geant4Found}" >> config/Makefile.options
 echo "HEASOFTINSTALLED := ${FitsIOFound}" >> config/Makefile.options
 echo "MPIINSTALLED     := ${MPIFound}" >> config/Makefile.options
+echo "ONNXINSTALLED   := ${OnnxFound}" >> config/Makefile.options
 echo " " >> config/Makefile.options
-
 echo "# " >> config/Makefile.options
 echo "# Section B: Compiler optimizations" >> config/Makefile.options
 echo "# " >> config/Makefile.options

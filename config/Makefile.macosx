@@ -19,7 +19,7 @@ ROOTGLIBS     := $(shell root-config --glibs)
 
 # Compiler & linker options:
 CXX           := c++
-CXXFLAGS      := $(OPT) -std=c++14 -pipe -Wall -fPIC -D_REENTRANT -I$(IN) -I$(CT) -I. $(ROOTCFLAGS) -D___MACOSX___ -D___CLING___ -Wno-unused-but-set-variable -Wno-overloaded-virtual -Wno-tautological-undefined-compare -Wno-deprecated-declarations
+CXXFLAGS      := $(OPT) -std=c++17 -pipe -Wall -fPIC -D_REENTRANT -I$(IN) -I$(CT) -I. $(ROOTCFLAGS) -D___MACOSX___ -D___CLING___ -Wno-unused-but-set-variable -Wno-overloaded-virtual -Wno-tautological-undefined-compare -Wno-deprecated-declarations
 DEFINES       := -UHARDWARE
 LD            := c++
 LDFLAGS       := $(OPT) -Xlinker -flat_namespace -D___MACOSX___
@@ -41,6 +41,29 @@ else ifeq ("$(shell pkg-config --exists cfitsio 1>&2 2> /dev/null; echo $$?)", "
 	HEALIBS = $(filter-out -lm, $(shell pkg-config --libs cfitsio))
 endif
 
+# ONNX Runtime
+ONNXCFLAGS   :=
+ONNXLIBS     :=
+ifeq ("$(ONNXINSTALLED)", "1")
+        ONNXCFLAGS += -I $(CONDA_PREFIX)/include/onnxruntime/core/session/
+        ONNXLIBS += -L $(CONDA_PREFIX)/lib -lonnxruntime
+else ifeq ("$(ONNXINSTALLED)", "2")
+        ONNXCFLAGS += -I /opt/homebrew/include/onnxruntime
+        ONNXLIBS += -L /opt/homebrew/lib/ -lonnxruntime
+endif
+
+# Compiler & linker options:
+CXX           := c++
+CXXFLAGS      := $(OPT) -std=c++17 -pipe -Wall -fPIC -D_REENTRANT -I$(IN) -I$(CT) -I. $(ROOTCFLAGS) $(ONNXCFLAGS) -D___MACOSX___ -D___CLING___ -Wno-unused-but-set-variable -Wno-overloaded-virtual -Wno-tautological-undefined-compare -Wno-deprecated-declarations
+DEFINES       := -UHARDWARE
+LD            := c++
+LDFLAGS       := $(OPT) -Xlinker -bind_at_load -flat_namespace -D___MACOSX___
+SOFLAGS       := -dynamiclib -flat_namespace -undefined suppress 
+LIBS          := $(ROOTLIBS) $(ONNXLIBS) -lpthread -lThread -lMinuit -lMinuit2 -lGeom -lSpectrum -lTMVA
+GLIBS         := $(ROOTGLIBS) 
+DEPFLAGS      := -M
+
+LINK          := ln -s -f
 
 # Modifications for MacPorts on Monterey
 ifneq ($(wildcard /opt/local/lib/libgcc),)
