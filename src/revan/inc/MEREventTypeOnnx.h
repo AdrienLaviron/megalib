@@ -24,12 +24,12 @@
 #include "MEREventType.h"
 #include "MFileEventsType.h"
 #include "MRawEventIncarnations.h"
+#include "MPointCloudInference.h"
 
 // Onnx libs:
 #include <onnxruntime_cxx_api.h>
 
 // Forward declarations:
-
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -52,8 +52,9 @@ class MEREventTypeOnnx : public MEREventType
   // protected members:
  protected:
   MString m_EventTypeFileName;
-  MFileEventsType* m_FileEventsType;
+  //MFileEventsType* m_FileEventsType;
 
+  MPointCloudInference* m_model;
   //torch::jit::script::Module m_module;
 
 

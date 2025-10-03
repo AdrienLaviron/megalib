@@ -34,6 +34,7 @@ FILES := MGeometryRevan \
 	MERHitClusterizer \
   MEREventType \
   MEREventTypeExternal \
+  MPointCloudInference \
   MEREventTypeOnnx \
 	MERTrack \
 	MERTrackPearson \

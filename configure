@@ -422,9 +422,10 @@ OnnxFound=0
 if [[ ${CONDA_PREFIX} != "" ]] && [[ -f ${CONDA_PREFIX}/include/onnxruntime/core/session/onnxruntime_cxx_api.h ]]; then
   echo "Found an onnxruntime install in a conda environment."
   OnnxFound=1
+  # cp libonnxruntime.dylib megalib/lib/; cp libc++.1.dylib megalib/lib if necessary???
 else
   if [[ -f /opt/homebrew/include/onnxruntime/onnxruntime_cxx_api.h ]]; then
-    echo "Found a homebrez install of onnxruntime."
+    echo "Found a homebrew install of onnxruntime."
     OnnxFound=2
   else
     echo "-> Did not find a pytorch install in the current conda environment."

@@ -23,6 +23,7 @@
 // MEGAlib libs:
 #include "MAssert.h"
 #include "MFileEventsType.h"
+#include "MPointCloudInference.h"
 
 // Onnx libs:
 #include <onnxruntime_cxx_api.h>
@@ -31,6 +32,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <string>
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,20 +43,16 @@ ClassImp(MEREventTypeOnnx)
 #endif
 
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
-
 
 MEREventTypeOnnx::MEREventTypeOnnx() : MEREventType()
 {
+  m_model = nullptr;
   m_EventTypeFileName = "";
-  m_FileEventsType = new MFileEventsType();
 }
 
 MEREventTypeOnnx::~MEREventTypeOnnx()
 {
-  delete m_FileEventsType;
 }
 
 
@@ -62,8 +60,9 @@ MEREventTypeOnnx::~MEREventTypeOnnx()
 
 void MEREventTypeOnnx::SetParameters(MString EventTypeFileName)
 {
-/*  m_EventTypeFileName = EventTypeFileName;
-  try {
+  m_EventTypeFileName = EventTypeFileName;
+  m_model = new MPointCloudInference(m_EventTypeFileName.ToString());
+  /*try {
     m_module = torch::jit::load(m_EventTypeFileName);
     m_module.eval();
     mout << "Module " << m_EventTypeFileName << " loaded successfully." << endl;
@@ -74,7 +73,8 @@ void MEREventTypeOnnx::SetParameters(MString EventTypeFileName)
 
 bool MEREventTypeOnnx::PostAnalysis()
 {
-  return m_FileEventsType->Close();
+  //return m_FileEventsType->Close();
+  return true;
 }
 
 
@@ -83,7 +83,7 @@ bool MEREventTypeOnnx::PostAnalysis()
 bool MEREventTypeOnnx::Analyze(MRawEventIncarnations* List)
 {
   MERConstruction::Analyze(List);
-
+/*
   if (! m_FileEventsType->IsOpen() ) {//First event
     m_FileEventsType->Open(m_EventTypeFileName); //Read-mode
   }
@@ -104,7 +104,7 @@ bool MEREventTypeOnnx::Analyze(MRawEventIncarnations* List)
       RE->SetEventType( c_UnknownEvent );
       RE->SetEventTypeProbability( 0. );
     }
-  }
+  }*/
   return true;
 }
 
