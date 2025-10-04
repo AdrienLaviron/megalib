@@ -1,5 +1,5 @@
 /*
- * MGUIERAlgorithm.h
+ * MGUIGeneralAlgorithm.h
  *
  * Copyright (C) by Andreas Zoglauer.
  * All rights reserved.
@@ -9,8 +9,8 @@
  */
 
 
-#ifndef __MGUIERAlgorithm__
-#define __MGUIERAlgorithm__
+#ifndef __MGUIGeneralAlgorithm__
+#define __MGUIGeneralAlgorithm__
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -30,13 +30,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-class MGUIERAlgorithm : public MGUIDialog
+class MGUIGeneralAlgorithm : public MGUIDialog
 {
   // Public Interface:
  public:
-  MGUIERAlgorithm(const TGWindow* Parent, const TGWindow* Main,
+  MGUIGeneralAlgorithm(const TGWindow* Parent, const TGWindow* Main,
                   MSettingsEventReconstruction* Data);
-  virtual ~MGUIERAlgorithm();
+  virtual ~MGUIGeneralAlgorithm();
 
   // protected methods:
  protected:
@@ -57,20 +57,20 @@ class MGUIERAlgorithm : public MGUIDialog
   MSettingsEventReconstruction* m_Data;
 
   TGLayoutHints* m_ListLayout;
-  /*MGUIERBList* m_CoincidenceList;
+  MGUIERBList* m_CoincidenceList;
   MGUIERBList* m_EventClusteringList;
   MGUIERBList* m_HitClusteringList;
-  MGUIERBList* m_EventTypeList;*/
-  MGUIERBList* m_TrackingList;
-  MGUIERBList* m_CSRList;
-//  MGUIERBList* m_PairList;
+  MGUIERBList* m_EventTypeList;
+  //MGUIERBList* m_TrackingList;
+  //MGUIERBList* m_CSRList;
+  //MGUIERBList* m_PairList;
   //MGUIERBList* m_DecayList;
 
 
 
 #ifdef ___CLING___
  public:
-  ClassDef(MGUIERAlgorithm, 0)
+  ClassDef(MGUIGeneralAlgorithm, 0)
 #endif
 
 };

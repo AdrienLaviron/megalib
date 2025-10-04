@@ -79,6 +79,7 @@ FILES_UI := \
 	MInterfaceRevan \
 	MGUIRevanMain \
 	MGUIERAlgorithm \
+	MGUIGeneralAlgorithm \
 	MGUIOptionsGeneral \
 	MGUIOptionsCoincidence \
 	MGUIOptionsHitClustering \

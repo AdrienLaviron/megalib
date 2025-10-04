@@ -75,6 +75,7 @@ class MGUIRevanMain : public MGUIMain
   enum ButtonIDs {
     c_Min = c_LastMainButtonID, 
     c_Options, 
+    c_OptionsReconstruction, 
     c_OptionsGeneral, 
     c_OptionsCoincidence, 
     c_OptionsEventClustering, 

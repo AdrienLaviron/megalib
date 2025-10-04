@@ -1,5 +1,5 @@
 /*
- * MGUIERAlgorithm.cxx
+ * MGUIGeneralAlgorithm.cxx
  *
  *
  * Copyright (C) by Andreas Zoglauer.
@@ -18,13 +18,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-// MGUIERAlgorithm
+// MGUIGeneralAlgorithm
 //
 ////////////////////////////////////////////////////////////////////////////////
 
 
 // Include the header:
-#include "MGUIERAlgorithm.h"
+#include "MGUIGeneralAlgorithm.h"
 
 // Standard libs:
 
@@ -38,7 +38,7 @@
 
 
 #ifdef ___CLING___
-ClassImp(MGUIERAlgorithm)
+ClassImp(MGUIGeneralAlgorithm)
 #endif
 
 
@@ -46,9 +46,9 @@ ClassImp(MGUIERAlgorithm)
 
 
 
-MGUIERAlgorithm::MGUIERAlgorithm(const TGWindow* Parent, const TGWindow* Main, MSettingsEventReconstruction* Data) : MGUIDialog(Parent, Main)
+MGUIGeneralAlgorithm::MGUIGeneralAlgorithm(const TGWindow* Parent, const TGWindow* Main, MSettingsEventReconstruction* Data) : MGUIDialog(Parent, Main)
 {
-  // Construct an instance of MGUIERAlgorithm and bring it to the screen
+  // Construct an instance of MGUIGeneralAlgorithm and bring it to the screen
   m_Data = Data;
 
   Create();
@@ -58,18 +58,18 @@ MGUIERAlgorithm::MGUIERAlgorithm(const TGWindow* Parent, const TGWindow* Main, M
 ////////////////////////////////////////////////////////////////////////////////
 
 
-MGUIERAlgorithm::~MGUIERAlgorithm()
+MGUIGeneralAlgorithm::~MGUIGeneralAlgorithm()
 {
-  // Delete an instance of MGUIERAlgorithm
+  // Delete an instance of MGUIGeneralAlgorithm
 
-  delete m_TrackingList;
-  delete m_CSRList;
-//  delete m_PairList;
+  delete m_CoincidenceList;
+  delete m_EventClusteringList;
+  delete m_HitClusteringList;
+  delete m_EventTypeList;
+  //delete m_TrackingList;
+  //delete m_CSRList;
+  //delete m_PairList;
   //delete m_DecayList;
-//  delete m_CoincidenceList;
-//  delete m_EventClusteringList;
-//  delete m_HitClusteringList;
-//  delete m_EventTypeList;
   delete m_ListLayout;
 }
 
@@ -77,16 +77,16 @@ MGUIERAlgorithm::~MGUIERAlgorithm()
 ////////////////////////////////////////////////////////////////////////////////
 
 
-void MGUIERAlgorithm::Create()
+void MGUIGeneralAlgorithm::Create()
 {
   // Create the main window
 
   // We start with a name and an icon...
-  SetWindowName("Reconstruction algorithms");
+  SetWindowName("General algorithms");
   //AddSubTitle("Choose the reconstruction algorithms");
 
   m_ListLayout = new TGLayoutHints(kLHintsExpandX | kLHintsTop, 20, 20, 10, 10);
-/*
+
   // Coincidence search
   m_CoincidenceList = new MGUIERBList(this, "Coincidence search", true);
   m_CoincidenceList->Add("No coincidence or coincident hits already merged in simulation or hardware (DEFAULT)");
@@ -130,7 +130,7 @@ void MGUIERAlgorithm::Create()
   m_EventTypeList->SetSelected(m_Data->GetEventTypeAlgorithm());
   m_EventTypeList->Create();
   AddFrame(m_EventTypeList, m_ListLayout);
-*/
+/*
   // Electron tracking
   m_TrackingList = new MGUIERBList(this, "Electron tracking", true);
   m_TrackingList->Add("No electron tracking"); // 0
@@ -171,7 +171,7 @@ void MGUIERAlgorithm::Create()
     m_TrackingList->SetSelected(0);
   }
   m_TrackingList->Create();
-  AddFrame(m_TrackingList, m_ListLayout);
+  AddFrame(m_TrackingList, m_ListLayout);*/
 /*
   m_PairList = new MGUIERBList(this, "Pair reconstruction", true);
   m_PairList->Add("Default algorithm");  // 0
@@ -181,6 +181,7 @@ void MGUIERAlgorithm::Create()
   m_PairList->Create();
   AddFrame(m_PairList, m_ListLayout);
 */
+/*
   m_CSRList = new MGUIERBList(this, "Compton tracking", true);
   m_CSRList->Add("No Compton tracking");
   m_CSRList->Add("Classic Compton Sequence Reconstruction without Energy Recovery (Chi-square approach via angles)");
@@ -194,7 +195,7 @@ void MGUIERAlgorithm::Create()
   m_CSRList->SetSelected(m_Data->GetCSRAlgorithm());
   m_CSRList->Create();
   AddFrame(m_CSRList, m_ListLayout);
-
+*/
   /*
   m_DecayList = new MGUIERBList(this, "Decay detection", true);
   m_DecayList->Add("No Decay detection");
@@ -220,10 +221,10 @@ void MGUIERAlgorithm::Create()
 ////////////////////////////////////////////////////////////////////////////////
 
 
-bool MGUIERAlgorithm::OnApply()
+bool MGUIGeneralAlgorithm::OnApply()
 {
   // The Apply button has been pressed
-/*
+
   // Coincidences
   m_Data->SetCoincidenceAlgorithm(m_CoincidenceList->GetSelected());
   // Event clustering
@@ -241,8 +242,8 @@ bool MGUIERAlgorithm::OnApply()
     m_Data->SetEventTypeAlgorithm(MRawEventAnalyzer::c_EventTypeDefault);
   } else if (m_EventTypeList->GetSelected() == 1) {
     m_Data->SetEventTypeAlgorithm(MRawEventAnalyzer::c_EventTypeExternal);
-  }*/
-  // Tracking
+  }
+/*  // Tracking
   if (m_TrackingList->GetSelected() == 0) {
     m_Data->SetTrackingAlgorithm(MRawEventAnalyzer::c_TrackingAlgoNone);
   } else if (m_TrackingList->GetSelected() == 1) {
@@ -275,10 +276,10 @@ bool MGUIERAlgorithm::OnApply()
   // Decay
   //m_Data->SetDecayAlgorithm(m_DecayList->GetSelected());
   m_Data->SetDecayAlgorithm(0);
-
+*/
   return true;
 }
 
 
-// MGUIERAlgorithm: the end...
+// MGUIGeneralAlgorithm: the end...
 ////////////////////////////////////////////////////////////////////////////////
