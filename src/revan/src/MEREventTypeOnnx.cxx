@@ -26,7 +26,7 @@
 #include "MPointCloudInference.h"
 
 // Onnx libs:
-#include <onnxruntime_cxx_api.h>
+//#include <onnxruntime_cxx_api.h>
 
 // C++ std libs:
 #include <iostream>

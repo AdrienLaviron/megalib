@@ -149,6 +149,16 @@ void MGUIOptionsEventType::Create()
                             m_Data->GetEventTypeFileName());
     m_FileSelector->SetFileType("file to be implemented", "*.etp");
     AddFrame(m_FileSelector, SubOptions);
+  } else if (m_Data->GetEventTypeAlgorithm() == MRawEventAnalyzer::c_EventTypeOnnx) {
+    AddSubTitle("ONNX-based type identification");
+
+    TGLayoutHints* SubOptions = new TGLayoutHints(kLHintsLeft | kLHintsTop | kLHintsExpandX, 40, 20, 0, 5);
+
+    m_FileSelector =
+      new MGUIEFileSelector(this, "Model file:",
+                            m_Data->GetEventTypeFileName());
+    m_FileSelector->SetFileType("file to be implemented", "*.onnx");
+    AddFrame(m_FileSelector, SubOptions);
   } else {
     AddSubTitle("Unknown Event Type identification algorithm!");
   }
@@ -188,6 +198,8 @@ bool MGUIOptionsEventType::OnApply()
       }
     }
   } else if (m_Data->GetEventTypeAlgorithm() == MRawEventAnalyzer::c_EventTypeExternal) {
+    m_Data->SetEventTypeFileName(m_FileSelector->GetFileName());
+  } else if (m_Data->GetEventTypeAlgorithm() == MRawEventAnalyzer::c_EventTypeOnnx) {
     m_Data->SetEventTypeFileName(m_FileSelector->GetFileName());
   }
 

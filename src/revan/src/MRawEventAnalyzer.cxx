@@ -57,6 +57,7 @@ using namespace std;
 #include "MEREventClusterizerTMVA.h"
 #include "MEREventType.h"
 #include "MEREventTypeExternal.h"
+#include "MEREventTypeOnnx.h"
 #include "MERTrack.h"
 #include "MERTrackPearson.h"
 #include "MERTrackRank.h"
@@ -1374,6 +1375,9 @@ bool MRawEventAnalyzer::PreAnalysis()
     } else if (m_EventTypeAlgorithm == c_EventTypeExternal) {
       m_EventType = new MEREventTypeExternal();
       dynamic_cast<MEREventTypeExternal*>(m_EventType)->SetParameters( m_EventTypeFileName );
+    } else if (m_EventTypeAlgorithm == c_EventTypeOnnx) {
+      m_EventType = new MEREventTypeOnnx();
+      dynamic_cast<MEREventTypeOnnx*>(m_EventType)->SetParameters( m_EventTypeFileName );
     } else {
       merr<<"Unknown event type algorithm: "<<m_EventTypeAlgorithm<<endl;
       Return = false;

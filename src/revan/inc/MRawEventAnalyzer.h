@@ -170,7 +170,8 @@ class MRawEventAnalyzer
 
   enum c_EventTypeAlgo {
     c_EventTypeDefault,
-    c_EventTypeExternal };
+    c_EventTypeExternal,
+    c_EventTypeOnnx };
 
   //! Set the Event type identification algorithm
   void SetEventTypeAlgorithm(int ID) { m_EventTypeAlgorithm = ID; }

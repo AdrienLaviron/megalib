@@ -242,6 +242,8 @@ bool MGUIGeneralAlgorithm::OnApply()
     m_Data->SetEventTypeAlgorithm(MRawEventAnalyzer::c_EventTypeDefault);
   } else if (m_EventTypeList->GetSelected() == 1) {
     m_Data->SetEventTypeAlgorithm(MRawEventAnalyzer::c_EventTypeExternal);
+  } else if (m_EventTypeList->GetSelected() == 2) {
+    m_Data->SetEventTypeAlgorithm(MRawEventAnalyzer::c_EventTypeOnnx);
   }
 /*  // Tracking
   if (m_TrackingList->GetSelected() == 0) {
