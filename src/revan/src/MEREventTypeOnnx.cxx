@@ -53,6 +53,7 @@ MEREventTypeOnnx::MEREventTypeOnnx() : MEREventType()
 
 MEREventTypeOnnx::~MEREventTypeOnnx()
 {
+  if(m_model) delete m_model;
 }
 
 
