@@ -63,18 +63,10 @@ void MEREventTypeOnnx::SetParameters(MString EventTypeFileName)
 {
   m_EventTypeFileName = EventTypeFileName;
   m_model = new MPointCloudInference(m_EventTypeFileName.ToString());
-  /*try {
-    m_module = torch::jit::load(m_EventTypeFileName);
-    m_module.eval();
-    mout << "Module " << m_EventTypeFileName << " loaded successfully." << endl;
-  } catch (const c10::Error& e) {
-    merr << "Error loading model: " << e.msg() << endl;
-  }*/
 }
 
 bool MEREventTypeOnnx::PostAnalysis()
 {
-  //return m_FileEventsType->Close();
   return true;
 }
 
@@ -84,28 +76,51 @@ bool MEREventTypeOnnx::PostAnalysis()
 bool MEREventTypeOnnx::Analyze(MRawEventIncarnations* List)
 {
   MERConstruction::Analyze(List);
-/*
-  if (! m_FileEventsType->IsOpen() ) {//First event
-    m_FileEventsType->Open(m_EventTypeFileName); //Read-mode
+  MRERawEvent* RE = nullptr;
+  MRESEList* hits = new MRESEList();
+  for (int e = 0; e < m_List->GetNRawEvents(); e++) {
+    RE = m_List->GetRawEventAt(e);
+    // Instantiate data structures
+    int batch_size = 1;
+    int feature_dim = 4;
+    int num_points = 0;//Different for each event
+    for (int i = 0; i < RE->GetNRESEs(); i++) {
+      if (RE->GetRESEAt(i)->GetType() == MRESE::c_Hit || 
+          RE->GetRESEAt(i)->GetType() == MRESE::c_Cluster) {
+        hits->AddRESE(RE->GetRESEAt(i));
+        num_points++;
+      }
+    }
+    vector<float> point_cloud_data(batch_size * feature_dim * num_points);
+    vector<float> mask_data(batch_size * num_points);
+    // Mask is just 1s everywhere
+    for (size_t i = 0; i < mask_data.size(); ++i) { mask_data[i] = 1.0f; }
+    // Get data into point_could_data - assuming batch size 1
+    MRESE* rese = nullptr;
+    for (int i = 0; i < num_points; ++i) {
+      rese = hits->GetRESEAt(i);
+      point_cloud_data[ batch_size*feature_dim*i ]   = rese->GetPositionX();
+      point_cloud_data[ batch_size*feature_dim*i +1] = rese->GetPositionY();
+      point_cloud_data[ batch_size*feature_dim*i +2] = rese->GetPositionZ();
+      point_cloud_data[ batch_size*feature_dim*i +3] = rese->GetEnergy();
+    }
+
+    pair<vector<float>, vector<float>> 
+              results = m_model->inference(point_cloud_data, mask_data,
+                                           batch_size, feature_dim, num_points);
+    vector<float>& logits = results.first;      // N x 1 (batch_size x 1)
+
+    if ( logits[0] > 0 ) {
+      RE->SetEventType( c_PairEvent );
+      RE->SetEventTypeProbability( MPointCloudInference::sigmoid(logits[0]) );
+      mout << "ID " << RE->GetEventID() << " PA " << MPointCloudInference::sigmoid(logits[0]) << endl;
+    } else {
+      RE->SetEventType( c_ComptonEvent );
+      RE->SetEventTypeProbability( 1 - MPointCloudInference::sigmoid(logits[0]) );
+      mout << "ID " << RE->GetEventID() << " CO " << 1- MPointCloudInference::sigmoid(logits[0]) << endl;
+    }
   }
 
-  // Read file
-  streampos filePos = m_FileEventsType->GetFilePosition(); // Position at start of REI
-  MRERawEvent* RE = nullptr;  
-  for (int e = 0; e < m_List->GetNRawEvents(); e++) {
-    m_FileEventsType->Seek(filePos);// Rewind to position at start of REI
-    RE = m_List->GetRawEventAt(e);
-    while(m_FileEventsType->GetNextEvent() && m_FileEventsType->GetEventId() != RE->GetEventId()) {}
-    mout << "evtid=" << m_FileEventsType->GetEventId() << endl;
-    if (m_FileEventsType->GetEventId() == RE->GetEventId()) { // if found matching ID
-      RE->SetEventType( m_FileEventsType->GetEventType() );
-      RE->SetEventTypeProbability( m_FileEventsType->GetEventTypeProbability() );
-    } else {
-      merr << "MEREventTypeOnnx: No event type found for event ID " << RE->GetEventId() << endl;
-      RE->SetEventType( c_UnknownEvent );
-      RE->SetEventTypeProbability( 0. );
-    }
-  }*/
   return true;
 }
 

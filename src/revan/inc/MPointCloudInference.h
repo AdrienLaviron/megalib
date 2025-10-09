@@ -35,6 +35,7 @@ class MPointCloudInference {
     int batch_size, 
     int feature_dim, 
     int num_points);
+  static float sigmoid(float x);
  private:
   void loadModelInfo();
 
