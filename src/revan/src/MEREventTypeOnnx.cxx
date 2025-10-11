@@ -99,11 +99,21 @@ bool MEREventTypeOnnx::Analyze(MRawEventIncarnations* List)
     MRESE* rese = nullptr;
     for (int i = 0; i < num_points; ++i) {
       rese = hits->GetRESEAt(i);
-      point_cloud_data[ batch_size*feature_dim*i ]   = rese->GetPositionX();
+      /*point_cloud_data[ batch_size*feature_dim*i ]   = rese->GetPositionX();
       point_cloud_data[ batch_size*feature_dim*i +1] = rese->GetPositionY();
       point_cloud_data[ batch_size*feature_dim*i +2] = rese->GetPositionZ();
-      point_cloud_data[ batch_size*feature_dim*i +3] = rese->GetEnergy();
+      point_cloud_data[ batch_size*feature_dim*i +3] = rese->GetEnergy();*/
+      point_cloud_data[ i ]   = rese->GetPositionX();
+      point_cloud_data[ i +num_points] = rese->GetPositionY();
+      point_cloud_data[ i +2*num_points] = rese->GetPositionZ();
+      point_cloud_data[ i +3*num_points] = rese->GetEnergy();
     }
+    cout << "EventID= " << RE->GetEventID();
+    for (int i = 0; i < num_points*batch_size*feature_dim; i++) {
+      cout << " " << point_cloud_data[i];
+      if (i%5 == 4) cout << endl;
+    }
+    cout << endl;
 
     pair<vector<float>, vector<float>> 
               results = m_model->inference(point_cloud_data, mask_data,
