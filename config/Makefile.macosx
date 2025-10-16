@@ -17,19 +17,6 @@ DLL           := so
 ROOTCFLAGS    := $(shell root-config --cflags)
 ROOTGLIBS     := $(shell root-config --glibs)
 
-# Compiler & linker options:
-CXX           := c++
-CXXFLAGS      := $(OPT) -std=c++17 -pipe -Wall -fPIC -D_REENTRANT -I$(IN) -I$(CT) -I. $(ROOTCFLAGS) -D___MACOSX___ -D___CLING___ -Wno-unused-but-set-variable -Wno-overloaded-virtual -Wno-tautological-undefined-compare -Wno-deprecated-declarations
-DEFINES       := -UHARDWARE
-LD            := c++
-LDFLAGS       := $(OPT) -Xlinker -flat_namespace -D___MACOSX___
-SOFLAGS       := -dynamiclib -undefined dynamic_lookup
-LIBS          := $(ROOTGLIBS) -lMinuit -lMinuit2 -lGeom -lSpectrum -lTMVA
-GLIBS         := 
-DEPFLAGS      := -M
-
-LINK          := ln -s -f
-
 # HEASoft
 HEACFLAGS     :=
 HEALIBS       :=
@@ -57,10 +44,10 @@ CXX           := c++
 CXXFLAGS      := $(OPT) -std=c++17 -pipe -Wall -fPIC -D_REENTRANT -I$(IN) -I$(CT) -I. $(ROOTCFLAGS) $(ONNXCFLAGS) -D___MACOSX___ -D___CLING___ -Wno-unused-but-set-variable -Wno-overloaded-virtual -Wno-tautological-undefined-compare -Wno-deprecated-declarations
 DEFINES       := -UHARDWARE
 LD            := c++
-LDFLAGS       := $(OPT) -Xlinker -bind_at_load -flat_namespace -D___MACOSX___
-SOFLAGS       := -dynamiclib -flat_namespace -undefined suppress 
-LIBS          := $(ROOTLIBS) $(ONNXLIBS) -lpthread -lThread -lMinuit -lMinuit2 -lGeom -lSpectrum -lTMVA
-GLIBS         := $(ROOTGLIBS) 
+LDFLAGS       := $(OPT) -Xlinker -flat_namespace -D___MACOSX___
+SOFLAGS       := -dynamiclib -undefined dynamic_lookup
+LIBS          := $(ROOTGLIBS) $(ONNXLIBS) -lMinuit -lMinuit2 -lGeom -lSpectrum -lTMVA
+GLIBS         := 
 DEPFLAGS      := -M
 
 LINK          := ln -s -f

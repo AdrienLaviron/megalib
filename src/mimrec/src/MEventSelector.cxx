@@ -36,6 +36,7 @@ using namespace std;
 
 // MEGAlib libs:
 #include "MGlobal.h"
+#include "MPhysicalEvent.h"
 #include "MComptonEvent.h"
 #include "MPairEvent.h"
 #include "MPhotoEvent.h"
@@ -721,9 +722,9 @@ bool MEventSelector::IsQualifiedEvent(MPhysicalEvent* Event, bool DumpOutput)
     Return = false;
   }
   if (m_UseBeam == true) {
-    if (Event->GetType() == MPhysicalEvent::c_Photo ||
-        Event->GetType() == MPhysicalEvent::c_Compton ||
-        Event->GetType() == MPhysicalEvent::c_Pair) {
+    if (Event->GetType() == c_PhotoEvent ||
+        Event->GetType() == c_ComptonEvent ||
+        Event->GetType() == c_PairEvent) {
       MVector Position = Event->GetPosition();
       // The same equations appear in MResponseMultipleComptonLens
       double Radius = (Position - m_BeamFocalSpot).Cross(m_BeamStart - m_BeamFocalSpot).Mag()/(m_BeamStart - m_BeamFocalSpot).Mag();
@@ -1326,9 +1327,9 @@ bool MEventSelector::IsQualifiedEventFast(MPhysicalEvent* Event)
   // ATTENTION: PUT ALL CHANGES HERE INTO BOTH (FAST & DETAILED) VERSION OF THIS FUNCTION
 
   if (m_UseBeam == true) {
-    if (Event->GetType() == MPhysicalEvent::c_Photo ||
-        Event->GetType() == MPhysicalEvent::c_Compton ||
-        Event->GetType() == MPhysicalEvent::c_Pair) {
+    if (Event->GetType() == c_PhotoEvent ||
+        Event->GetType() == c_ComptonEvent ||
+        Event->GetType() == c_PairEvent) {
       MVector Position = Event->GetPosition();
       // The same equations appear in MResponseMultipleComptonLens
       double Radius = (Position - m_BeamFocalSpot).Cross(m_BeamStart - m_BeamFocalSpot).Mag()/(m_BeamStart - m_BeamFocalSpot).Mag();

@@ -422,6 +422,7 @@ OnnxFound=0
 if [[ ${CONDA_PREFIX} != "" ]] && [[ -f ${CONDA_PREFIX}/include/onnxruntime/core/session/onnxruntime_cxx_api.h ]]; then
   echo "Found an onnxruntime install in a conda environment."
   OnnxFound=1
+  echo ""
   # cp libonnxruntime.dylib megalib/lib/; cp libc++.1.dylib megalib/lib if necessary???
 else
   if [[ -f /opt/homebrew/include/onnxruntime/onnxruntime_cxx_api.h ]]; then
