@@ -422,8 +422,6 @@ OnnxFound=0
 if [[ ${CONDA_PREFIX} != "" ]] && [[ -f ${CONDA_PREFIX}/include/onnxruntime/core/session/onnxruntime_cxx_api.h ]]; then
   echo "Found an onnxruntime install in a conda environment."
   OnnxFound=1
-  echo ""
-  # cp libonnxruntime.dylib megalib/lib/; cp libc++.1.dylib megalib/lib if necessary???
 else
   if [[ -f /opt/homebrew/include/onnxruntime/onnxruntime_cxx_api.h ]]; then
     echo "Found a homebrew install of onnxruntime."
@@ -433,7 +431,6 @@ else
     echo "   Torch is not a mandatory part of MEGAlib. The installation will proceed without it."
   fi
 fi
-
 
 
 # Part 5:
@@ -645,6 +642,18 @@ fi
 echo ""
 echo "Removing old build..."
 make clean
+
+# Temporary fix to enable conda-installed onnxruntime library
+if [[ $OnnxFound -eq 1 ]]; then
+  echo ""
+  echo "WARNING: Start of the temporary fix for linking libonnxruntime and libc++"
+  echo "  - Copying libonnxruntime from ${CONDA_PREFIX}/lib to ${MEGALIB}/lib"
+  cp ${CONDA_PREFIX}/lib/libonnxruntime*.dylib ${MEGALIB}/lib/
+  echo "  - Copying libc++ from ${CONDA_PREFIX}/lib to ${MEGALIB}/lib"
+  cp ${CONDA_PREFIX}/lib/libc++*.dylib ${MEGALIB}/lib/
+  echo "  - End of temporary fix."
+  echo ""
+fi
 
 # Store configuration
 echo ""
