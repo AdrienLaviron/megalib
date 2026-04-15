@@ -266,6 +266,12 @@ void MCSteppingAction::UserSteppingAction(const G4Step* Step)
   MCEventAction* EventAction = (MCEventAction *) (G4EventManager::GetEventManager()->GetUserEventAction());
  
   double Time = Step->GetPostStepPoint()->GetGlobalTime()/second;
+  G4String ProcessName = Step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
+  int ProcessID = GetProcessId(ProcessName);
+  if (m_InteractionId == 1 && ProcessID != 14 && ProcessID != 3) {
+    //cout << "alaviron Process ID " << ProcessID << " is not pair - kill!" << endl;
+    EventAction->AbortEvent();
+  }
 
   if (EventAction->IsAborted() == true) {
     Track->SetTrackStatus(fKillTrackAndSecondaries);
@@ -299,8 +305,6 @@ void MCSteppingAction::UserSteppingAction(const G4Step* Step)
 
   // Prepare the IA interactions:
   if (Step->GetPostStepPoint()->GetProcessDefinedStep() != 0) {
-    G4String ProcessName = Step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
-    int ProcessID = GetProcessId(ProcessName);
 
       /*
       for (int ss = (int) fpSteppingManager->GetSecondary()->size()-1; 
