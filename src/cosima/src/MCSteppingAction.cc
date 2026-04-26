@@ -98,6 +98,8 @@ MCSteppingAction::MCSteppingAction(MCParameterFile& RunParameters) :
   }
   m_StoreIonization = RunParameters.StoreSimulationInfoIonization();
 
+  m_SelectProcessID = RunParameters.GetSelectedInteractionProcess();//Defaults to -1 in MCParameterFile
+
   m_WatchedVolumes = RunParameters.GetStoreSimulationInfoWatchedVolumes();
   m_WatchedVolumesLog.clear();
   for (auto S: m_WatchedVolumes) {
@@ -268,8 +270,8 @@ void MCSteppingAction::UserSteppingAction(const G4Step* Step)
   double Time = Step->GetPostStepPoint()->GetGlobalTime()/second;
   G4String ProcessName = Step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
   int ProcessID = GetProcessId(ProcessName);
-  if (m_InteractionId == 1 && ProcessID != 14 && ProcessID != 3) {
-    //cout << "alaviron Process ID " << ProcessID << " is not pair - kill!" << endl;
+  //m_SelectProcessID = c_ProcessIDPair;
+  if (m_SelectProcessID >= 0 && m_InteractionId == 1 && ProcessID != 14 && ProcessID != m_SelectProcessID) {
     EventAction->AbortEvent();
   }
 

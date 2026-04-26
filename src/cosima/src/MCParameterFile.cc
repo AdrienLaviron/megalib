@@ -25,6 +25,7 @@ using namespace std;
 #include "MCPhysicsList.hh"
 #include "MCVHit.hh"
 #include "MCIsotopeStore.hh"
+#include "MCSteppingAction.hh"
 
 // MEGAlib:
 #include "MGlobal.h"
@@ -64,6 +65,7 @@ MCParameterFile::MCParameterFile() : MParser(' ', true),
                                      m_StoreSimulationInfo(MSimEvent::c_StoreSimulationInfoAll),
                                      m_StoreSimulationInfoVersion(MSimEvent::GetOutputVersion()),
                                      m_StoreSimulationInfoIonization(false),
+                                     m_SelectedInteractionProcess(-1),
                                      m_StoreOneHitPerEvent(false),
                                      m_StoreMinimumEnergy(-1E+40*keV),
                                      m_StoreMaximumEnergyLoss(1E+40*keV),
@@ -406,6 +408,14 @@ bool MCParameterFile::Parse()
         Typo(i, "Cannot parse token StoreSimulationWatchedVolumes correctly:"
              " Number of tokens is not correct!");
         return false;
+      }
+    } else if (T->IsTokenAt(0, "SelectInteractionProcess", true)) {
+      if (T->GetNTokens() == 2) {
+        if (T->IsTokenAt(1, "Compton", true) || T->IsTokenAt(1, "compton", true)) {
+          m_SelectedInteractionProcess = MCSteppingAction::c_ProcessIDCompton;
+        } else if (T->IsTokenAt(1, "Pair", true) || T->IsTokenAt(1, "pair", true)) {
+          m_SelectedInteractionProcess = MCSteppingAction::c_ProcessIDPair;
+        }
       }
     } else if (T->IsTokenAt(0, "FileFormat", true) == true) {
       if (T->GetNTokens() == 2) {
