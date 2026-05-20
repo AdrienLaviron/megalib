@@ -8,18 +8,21 @@
  *
  */
 
+#include "MGlobal.h"
+
+#ifndef __MPointCloudInference__
+#define __MPointCloudInference__
+
+// The line below is commented out (or uncommented) by the "configure" script depending on whether the libonnxruntime library was found.
+// Do not modify manually!
+#define __LIBONNXRUNTIME_INSTALLED__
+#ifdef __LIBONNXRUNTIME_INSTALLED__
 
 #include <onnxruntime_cxx_api.h>
 #include <iostream>
 #include <vector>
 #include <memory>
 #include <string>
-
-#include "MGlobal.h"
-
-
-#ifndef __MPointCloudInference__
-#define __MPointCloudInference__
 
 using namespace std;
 
@@ -53,7 +56,28 @@ class MPointCloudInference {
 
 };
 
+
+#else
+
+class MPointCloudInference {
+ public:
+  MPointCloudInference(const string& model_path);
+  virtual ~MPointCloudInference() {}
+  pair<vector<float>, vector<float>> inference(
+    const vector<float>& point_cloud_data, 
+    const vector<float>& mask_data,
+    int batch_size, 
+    int feature_dim, 
+    int num_points);
+  static float sigmoid(float x);
+#ifdef ___CLING___
+ public:
+  ClassDef(MPointCloudInference, 0); // no description
+#endif
+};
+
 #endif
 
+#endif
 
 

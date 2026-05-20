@@ -39,7 +39,7 @@
 
 
 #ifdef ___CLING___
-ClassImp(MEREventTypeOnnx)
+  ClassImp(MEREventTypeOnnx)
 #endif
 
 
@@ -123,11 +123,11 @@ bool MEREventTypeOnnx::Analyze(MRawEventIncarnations* List)
     if ( logits[0] > 0 ) {
       RE->SetEventType( c_PairEvent );
       RE->SetEventTypeProbability( MPointCloudInference::sigmoid(logits[0]) );
-      mout << "ID " << RE->GetEventID() << " PA " << MPointCloudInference::sigmoid(logits[0]) << endl;
+      mdebug << "ID " << RE->GetEventID() << " PA " << MPointCloudInference::sigmoid(logits[0]) << endl;
     } else {
       RE->SetEventType( c_ComptonEvent );
       RE->SetEventTypeProbability( 1 - MPointCloudInference::sigmoid(logits[0]) );
-      mout << "ID " << RE->GetEventID() << " CO " << 1- MPointCloudInference::sigmoid(logits[0]) << endl;
+      mdebug << "ID " << RE->GetEventID() << " CO " << 1- MPointCloudInference::sigmoid(logits[0]) << endl;
     }
   }
 

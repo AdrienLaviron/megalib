@@ -37,6 +37,7 @@
 
 using namespace std;
 
+#ifdef __LIBONNXRUNTIME_INSTALLED__
 
 MPointCloudInference::MPointCloudInference(const string& model_path) : memory_info(Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault)) {
   
@@ -202,6 +203,25 @@ void MPointCloudInference::loadModelInfo() {
       //mout << "Output " << i << ": " << output_names.back() << endl;
   }
 }
+
+#else
+
+MPointCloudInference::MPointCloudInference(const string& model_path) {
+    merr << "alaviron: libonnxruntime not detected!" << endl;
+    // Need to fail harder?
+}
+
+pair<vector<float>, vector<float>> MPointCloudInference::inference(
+  const vector<float>& point_cloud_data, 
+  const vector<float>& mask_data,
+  int batch_size, 
+  int feature_dim, 
+  int num_points) {
+    merr << "alaviron: libonnxruntime not detected!" << endl;
+    return make_pair(vector<float>{}, vector<float>{});
+}
+
+#endif
 
 float MPointCloudInference::sigmoid(float x) {
   return 1. / (1. + exp(-x) );
