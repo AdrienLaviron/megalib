@@ -28,7 +28,7 @@
 
 
 #ifdef ___CLING___
-ClassImp(MEREventTypeExternal)
+  ClassImp(MEREventTypeExternal)
 #endif
 
 
@@ -80,16 +80,16 @@ bool MEREventTypeExternal::Analyze(MRawEventIncarnations* List, bool quick = tru
     if (quick) {
       m_FileEventsType->GetNextEvent(); 
     } else {
-      while(m_FileEventsType->GetNextEvent() && m_FileEventsType->GetEventId() != RE->GetEventId()) {}
-      if (m_FileEventsType->GetEventId() == -1) {//If reached end of file
+      while(m_FileEventsType->GetNextEvent() && m_FileEventsType->GetEventID() != RE->GetEventID()) {}
+      if ( m_FileEventsType->IsEndOfFile() ) {//If reached end of file
          m_FileEventsType->Rewind(false);
       }
     }
-    if (m_FileEventsType->GetEventId() == RE->GetEventId()) { // if found matching ID
+    if (m_FileEventsType->GetEventID() == RE->GetEventID()) { // if found matching ID
       RE->SetEventType( m_FileEventsType->GetEventType() );
       RE->SetEventTypeProbability( m_FileEventsType->GetEventTypeProbability() );
     } else {
-      mout << "MEREventTypeExternal: No event type found for event ID " << RE->GetEventId() << endl;
+      mout << "MEREventTypeExternal: No event type found for event ID " << RE->GetEventID() << endl;
       RE->SetEventType( c_UnknownEvent );
       RE->SetEventTypeProbability( 0. );
       RE->SetEventReconstructed();

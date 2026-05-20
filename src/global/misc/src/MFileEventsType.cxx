@@ -46,10 +46,6 @@ ClassImp(MFileEventsType)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const long MFileEventsType::c_NoId = -1;
-
-////////////////////////////////////////////////////////////////////////////////
-
 
 MFileEventsType::MFileEventsType(MString GeometryFileName) : MFileEvents()
 {
@@ -94,7 +90,7 @@ bool MFileEventsType::Open(MString FileName, unsigned int Way, bool IsBinary)
 ////////////////////////////////////////////////////////////////////////////////
 void MFileEventsType::Reset()
 {
-  m_EventId = c_NoId;
+  m_EventId = 0;
   m_EventType = c_UnknownEvent;
   m_EventTypeProbability = 0.;
 
@@ -112,7 +108,7 @@ bool MFileEventsType::Close()
   return MFileEvents::Close();
 }
 
-long MFileEventsType::GetEventId()
+unsigned long MFileEventsType::GetEventID()
 {
   return m_EventId;
 }
@@ -145,8 +141,8 @@ bool MFileEventsType::GetNextEvent()
   
   MString Line;
   // Reset data fields
-  unsigned int status = 0; //3 LSB for id, et, tp
-  m_EventId = c_NoId;
+  m_Status = 0; //3 LSB for id, et, tp
+  m_EventId = 0;
   m_EventType = c_UnknownEvent;
   m_EventTypeProbability = 0.;
 
@@ -165,16 +161,16 @@ bool MFileEventsType::GetNextEvent()
 
     // New event
     } else if (Line[0] == 'S' && Line[1] == 'E') {
-      if (status) return true; // Even if incomplete event - allows to skip TP
+      if (m_Status) return true; // Even if incomplete event - allows to skip TP
     } else if (Line[0] == 'I' && Line[1] == 'D') {
       sscanf(Line.Data(), "ID %lu", &m_EventId);
-      status |= 0b001;
+      m_Status |= 0b001;
     } else if (Line[0] == 'E' && Line[1] == 'T' && Line.Length() > 4) {
       m_EventType = MPhysicalEvent::ParseET(&Line[3]);
-      status |= 0b010;
+      m_Status |= 0b010;
     } else if (Line[0] == 'T' && Line[1] == 'P') {
       sscanf(Line.Data(), "TP %lf", &m_EventTypeProbability);
-      status |= 0b100;
+      m_Status |= 0b100;
     // Next file
     } else if (Line[0] == 'N' && Line[1] == 'F') {
       if (! OpenNextFile(Line) ) {
@@ -184,9 +180,9 @@ bool MFileEventsType::GetNextEvent()
     // End of file
     } else if (Line[0] == 'E' && Line[1] == 'N') {
       ReadFooter(true);
-      if (status) return true; // Even if incomplete event - allows to skip TP
+      if (m_Status) return true; // Even if incomplete event - allows to skip TP
     }
-    if (status == 0b111) return true;
+    if (m_Status == 0b111) return true;
   }
 
   return false;

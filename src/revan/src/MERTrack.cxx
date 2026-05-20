@@ -1169,7 +1169,7 @@ void MERTrack::CheckForMips(MRERawEvent* RE)
 
     // b. Store the new event:
     MMuonEvent* Muon = new MMuonEvent(); // is later stored as m_Event!
-    Muon->SetId(RE->GetEventId());
+    Muon->SetId(RE->GetEventID());
     Muon->SetTime(RE->GetEventTime());
     Muon->SetEnergy(RE->GetEnergy());
     Muon->SetDirection(TrackArray[HighestPos]->GetAverageDirection());

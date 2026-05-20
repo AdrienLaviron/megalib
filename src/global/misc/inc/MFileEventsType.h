@@ -44,9 +44,10 @@ class MFileEventsType : public MFileEvents
   bool GetNextEvent();// fills private members with file content
 
   // Access private members
-  long GetEventId();
+  unsigned long GetEventID();
   int GetEventType();
   double GetEventTypeProbability();
+  bool IsEndOfFile() { return m_Status == 0; }
   // private methods:
  private:
   void Reset();
@@ -55,11 +56,11 @@ class MFileEventsType : public MFileEvents
  private:
   MString m_GeometryFileName;
 
-  long m_EventId;
+  unsigned int m_Status;
+  unsigned long m_EventId;
   int m_EventType;
   double m_EventTypeProbability;
 
-  static const long c_NoId;
   bool m_IsFirstEvent;
 
 

@@ -576,7 +576,7 @@ void MEREventType::CheckForPair(MRERawEvent* RE)
 
     // Pair starting from top
     MRESE* Vertex = 0;
-    int VertexDirection = 0;
+    //int VertexDirection = 0;
 
 
     // Check for vertex below
@@ -616,7 +616,7 @@ void MEREventType::CheckForPair(MRERawEvent* RE)
       if (LayersWithAtLeastTwoHitsBetweenStartAndStop > 4 && double (LayersWithAtLeastTwoHitsBetweenStartAndStop)/(StopIndex-StartIndex) > 0.5) {
         // A.L. Why require that at least half the layers should have two hits?
         Vertex = (*Iterator1);
-        VertexDirection = -1;
+        //VertexDirection = -1;
       }
     }
     
